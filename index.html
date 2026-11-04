@@ -107,51 +107,23 @@ textarea::placeholder, input::placeholder { color: var(--muted); opacity: .85; }
 @media (prefers-color-scheme: dark) { :root { --surface: #161617; --canvas: #000; --ink: #f5f5f7; --muted: #a1a1a6; --line: #424245; --blue: #2997ff; background: #161617; } .product-nav { background: #161617dd; border-color: #ffffff26; } .gradient-title { background-image: linear-gradient(105deg,#54acff 20%,#b795ff 53%,#f092cf 82%); } .chip.done { color: #73ce8a; border-color: #73ce8a; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
 
-/* Cinematic product presentation, inspired by the iPhone 18 Pro overview. */
-:root { color: var(--ink); }
-:root { --surface: #151516; --canvas: #000; --ink: #f5f5f7; --muted: #a1a1a6; --line: #38383b; --blue: #2997ff; color-scheme: dark; background: #000; }
-body { background: #000; }
-.product-nav { background: #101011d9; border-color: #ffffff20; }
-.nav-inner { max-width: 1200px; }
-.nav-note { color: #a1a1a6; }
-.hero { position: relative; isolation: isolate; overflow: hidden; max-width: none; min-height: 640px; height: calc(100svh - 65px); max-height: 980px; padding: 0 6.2% 48px; background: #000; text-align: left; display: flex; align-items: flex-end; }
-.hero-art { position: absolute; inset: 0 0 170px; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: -1; overflow: hidden; background: radial-gradient(ellipse 36% 38% at 50% 55%, #57222b42, transparent 100%); }
-.metal-number { padding: 0 40px 24px; font-size: clamp(270px,38vw,540px); font-weight: 750; letter-spacing: -.085em; line-height: 1; transform: scaleX(1.12); background: linear-gradient(155deg,#fff5f1 4%,#ca9f9f 13%,#38151c 27%,#b86f7c 38%,#f8d8d9 41%,#6f303b 48%,#210c12 62%,#af6870 77%,#f6d1ce 83%,#482028 97%); background-clip: text; -webkit-background-clip: text; color: transparent; filter: drop-shadow(1px 1px 1px #edb9bd90) drop-shadow(0 20px 45px #8e26352e); }
-.light-beam { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 560px; height: 100%; background: radial-gradient(ellipse 25% 4% at 50% 8%,#f4d0d762,transparent 100%),conic-gradient(from 165deg at 50% 0%,transparent 0deg,#8b5f7518 11deg,#d8a6b929 15deg,#8b5f7518 19deg,transparent 30deg); filter: blur(12px); opacity: .8; }
-.art-caption { position: absolute; bottom: 7%; left: 0; right: 0; text-align: center; font-size: 10px; font-weight: 500; letter-spacing: 5px; color: #b49a9e; }
-.hero-bottom { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: end; gap: 30px; }
-.hero-name { color: #f5f5f7; font-size: 26px; margin: 0 0 13px; letter-spacing: -1px; }
-h1 { font-size: clamp(42px,5.2vw,72px); letter-spacing: -.055em; line-height: 1.12; color: #f5f5f7; }
-.hero-description { font-size: 16px; color: #a1a1a6; margin-top: 18px; }
-.hero-meta { justify-content: flex-start; font-size: 11px; margin-top: 16px; color: #8e8e93; }
-.hero-meta .pill { color: #a1a1a6; }
-.hero-cta { flex-shrink: 0; display: flex; align-items: center; gap: 18px; background: #262628; border: 1px solid #ffffff0a; padding: 9px 9px 9px 22px; border-radius: 980px; color: #d2d2d7; font-size: 12px; }
-.hero-cta:hover { text-decoration: none; }
-.cta-pill { display: inline-flex; align-items: center; gap: 18px; background: #0071e3; color: #fff; padding: 14px 22px; border-radius: 980px; font-size: 14px; }
-.hero-cta:hover .cta-pill { background: #0077ed; }
-.stats { max-width: 980px; padding: 54px 24px 64px; }
-.stat strong { font-size: 44px; background: linear-gradient(180deg,#fff,#a1a1a6); background-clip: text; -webkit-background-clip: text; color: transparent; }
-.stat span { color: #86868b; font-size: 13px; }
-.stat + .stat { border-color: #2c2c2e; }
-.workspace { padding-top: 56px; border-top: 1px solid #202022; }
-.workspace-heading h2 { font-size: 44px; letter-spacing: -2px; }
-.workspace-heading p { color: #86868b; }
-.workspace-heading { margin-bottom: 42px; }
-.panel, .weekcard { background: #151516; border: 1px solid #ffffff08; }
-.date:hover { background: #2c2c2e; }
-.date.active { background: #f5f5f7; color: #1d1d1f; }
-.checkrow { border-bottom-color: #2b2b2e; }
-.progress { background: #333336; }
-.progress > div { background: linear-gradient(90deg,#b77785,#e6bfc5); }
-textarea, input[type=text] { background: #1c1c1e; }
-.page-footer { background: #000; border-top: 1px solid #202022; max-width: none; padding-left: max(32px,calc((100% - 1056px)/2)); padding-right: max(32px,calc((100% - 1056px)/2)); }
-@media (max-width:900px) { .hero-cta > span:first-child { display: none; } .hero-cta { padding: 7px; } .hero-bottom { gap: 18px; } .hero-name { font-size: 23px; } }
-@media (max-width:680px) { .hero { min-height: 620px; height: calc(94svh - 65px); padding: 0 24px 32px; } .hero-art { inset: 0 0 245px; } .metal-number { font-size: clamp(240px,68vw,390px); } .light-beam { width: 340px; } .art-caption { bottom: 0; font-size: 9px; letter-spacing: 4px; } .hero-bottom { display: block; } .hero-name { font-size: 20px; margin-bottom: 10px; } h1 { font-size: clamp(40px,10vw,56px); } .hero-description { font-size: 13px; margin-top: 14px; } .hero-meta { font-size: 10px; margin-top: 12px; } .hero-cta { display: inline-flex; margin-top: 22px; padding: 0; background: none; border: 0; } .cta-pill { padding: 12px 20px; font-size: 13px; } .stats { padding: 32px 12px 42px; } .stat strong { font-size: 30px; } .stat span { font-size: 10px; } .workspace { padding-top: 36px; } .workspace-heading h2 { font-size: 34px; } .workspace-heading { margin-bottom: 24px; } }
+/* Keep the planner compact on both desktop and iPad. */
+:root {color:var(--ink);}
+.product-nav {position:static;background:var(--surface);}
+.nav-inner {max-width:1120px;padding-block:17px;}
+.nav-date {font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;}
+.workspace {padding-top:42px;}
+.workspace-heading {align-items:center;}
+.workspace-heading h1 {color:var(--ink);font-size:clamp(28px,4vw,42px);letter-spacing:-.055em;}
+.workspace-heading p {font-size:13px;}
+.panel,.weekcard {border-radius:16px;}
+.subject {color:var(--muted);}
+.goal {margin-top:8px;}
+.stats {max-width:720px;padding:32px 16px;}
+.stat strong {font-size:22px;}
+@media(max-width:680px){.workspace{padding-top:28px}.layout article{grid-row:1}.tabs{justify-content:flex-start}.workspace-heading{margin-bottom:18px}}
 </style></head><body>
-<header class="product-nav"><div class="nav-inner"><a class="wordmark" href="#">Study 33</a><div class="nav-right"><span class="nav-note">나의 33일 학습 플래너</span><a class="nav-action" href="#planner">학습 시작</a></div></div></header>
+<header class="product-nav"><div class="nav-inner"><a class="wordmark" href="#">Study 33</a><div class="nav-right"><span class="nav-date" id="countdown">시험 대비</span></div></div></header>
 <main>
-<header class="hero">
-<div class="hero-art" aria-hidden="true"><div class="light-beam"></div><div class="metal-number">33</div><div class="art-caption">DAYS OF FOCUS</div></div>
-<div class="hero-bottom"><div><p class="hero-name">Study 33</p><h1>몰입, 더 깊이.</h1><p class="hero-description">33일, 여섯 과목. 완성을 향한 매일의 집중.</p><div class="hero-meta"><span>2026.11.04 — 12.06</span><span class="pill" id="countdown">시험 대비</span></div></div><a class="hero-cta" href="#planner"><span>당신의 다음 한 걸음.</span><span class="cta-pill">학습 시작하기 <span aria-hidden="true">↗</span></span></a></div>
-</header>
-<div class="stats"><div class="stat"><span>달성한 날짜</span><strong id="doneDays">0 / 33</strong></div><div class="stat"><span>완료한 체크 항목</span><strong id="doneTasks">0</strong></div><div class="stat"><span>전체 진행률</span><strong id="percent">0%</strong></div></div><div class="workspace" id="planner"><div class="workspace-inner"><div class="workspace-heading"><div><h2>일단, 오늘부터.</h2><p>한 과목씩 깊이. 한 걸음씩 앞으로.</p></div><nav class="tabs" aria-label="플래너 화면"><button data-tab="daily" class="active">데일리</button><button data-tab="weekly">위클리</button><button data-tab="goals">목표</button></nav></div><section id="daily" class="layout"><aside class="panel"><div class="panelhead"><h2>날짜 선택</h2><span class="muted small">11월–12월</span></div><div class="calendar" id="calendar"></div><p class="footer">초록 점은 해당 날짜의 목표를 모두 완료했음을 뜻합니다.</p></aside><article class="panel"><div class="panelhead"><div><div class="eyebrow" id="dayLabel"></div><div id="dayType" class="weekend"></div></div><span class="pill" id="dailyCount"></span></div><div class="subject" id="subject"></div><h2 class="goal" id="goalTitle"></h2><div class="progress"><div id="dailyProgress"></div></div><div class="field"><label for="customGoal">오늘 끝낼 범위 / 단원 (수정 가능)</label><input id="customGoal" type="text" placeholder="예: 미적분 2단원 전체 끝내기"></div><div class="section"><h2>완료 조건</h2><div id="tasks"></div></div><div class="field"><label for="notes">오늘의 오답 · 메모</label><textarea id="notes" placeholder="오늘 끝낸 단원, 막힌 개념, 내일 복습할 내용을 기록하세요."></textarea></div><div class="actions"><button class="btn secondary" id="prev">이전 날</button><button class="btn" id="next">다음 날</button><button class="btn secondary" id="resetDay">오늘 체크 초기화</button></div></article></section><section id="weekly" class="hidden"><h2>주차별 완주 로드맵</h2><div id="weekcards" class="weekly"></div></section><section id="goals" class="hidden"><div class="panel"><h2>시험 범위 관리</h2><p class="muted">범위가 확정되면 과목별로 입력하세요. 이 정보는 이 기기에 자동 저장됩니다.</p><div class="rangegrid" id="ranges"></div><div class="section"><h2>시험 전 최종 목표</h2><div id="masterGoals"></div></div><div class="actions"><button class="btn secondary" id="export">백업 파일 내보내기</button><button class="btn secondary" id="importBtn">백업 복원</button><input type="file" id="importFile" accept="application/json" hidden></div><p class="footer">데이터는 이 기기의 브라우저 저장소에 보관됩니다. Safari 데이터 삭제 또는 기기 변경에 대비해 정기적으로 백업하십시오.</p></div></section></div></div><footer class="page-footer"><p>Study 33 · 매일의 집중을 위한 공간.</p><p>공부 시간: 평일 22시 이후 / 주말 09:00–23:30. 충분한 수면과 휴식을 확보하면서 단원 완료를 우선하세요.</p></footer></main><script src="./app.js" defer></script></body></html>
+
+<div class="workspace" id="planner"><div class="workspace-inner"><div class="workspace-heading"><div><h1>학습 플래너</h1><p>11월 4일 – 12월 6일 · 시험 12월 7일</p></div><nav class="tabs" aria-label="플래너 화면"><button data-tab="daily" class="active">데일리</button><button data-tab="weekly">위클리</button><button data-tab="goals">목표</button></nav></div><section id="daily" class="layout"><aside class="panel"><div class="panelhead"><h2>날짜 선택</h2><span class="muted small">11월–12월</span></div><div class="calendar" id="calendar"></div><p class="footer">초록 점은 해당 날짜의 목표를 모두 완료했음을 뜻합니다.</p></aside><article class="panel"><div class="panelhead"><div><div class="eyebrow" id="dayLabel"></div><div id="dayType" class="weekend"></div></div><span class="pill" id="dailyCount"></span></div><div class="subject" id="subject"></div><h2 class="goal" id="goalTitle"></h2><div class="progress"><div id="dailyProgress"></div></div><div class="field"><label for="customGoal">오늘의 학습 목표</label><input id="customGoal" type="text" placeholder="예: 미적분 2단원 전체 끝내기"></div><div class="section"><h2>완료 조건</h2><div id="tasks"></div></div><div class="field"><label for="notes">오늘의 오답 · 메모</label><textarea id="notes" placeholder="오늘 끝낸 단원, 막힌 개념, 내일 복습할 내용을 기록하세요."></textarea></div><div class="actions"><button class="btn secondary" id="prev">이전 날</button><button class="btn" id="next">다음 날</button><button class="btn secondary" id="resetDay">오늘 체크 초기화</button></div></article></section><section id="weekly" class="hidden"><h2>주차별 계획</h2><div id="weekcards" class="weekly"></div></section><section id="goals" class="hidden"><div class="panel"><h2>시험 범위 관리</h2><p class="muted">범위가 확정되면 과목별로 입력하세요. 이 정보는 이 기기에 자동 저장됩니다.</p><div class="rangegrid" id="ranges"></div><div class="section"><h2>시험 전 최종 목표</h2><div id="masterGoals"></div></div><div class="actions"><button class="btn secondary" id="export">백업 파일 내보내기</button><button class="btn secondary" id="importBtn">백업 복원</button><input type="file" id="importFile" accept="application/json" hidden></div><p class="footer">데이터는 이 기기의 브라우저 저장소에 보관됩니다. Safari 데이터 삭제 또는 기기 변경에 대비해 정기적으로 백업하십시오.</p></div></section></div></div><div class="stats"><div class="stat"><span>달성한 날짜</span><strong id="doneDays">0 / 33</strong></div><div class="stat"><span>완료한 체크 항목</span><strong id="doneTasks">0</strong></div><div class="stat"><span>전체 진행률</span><strong id="percent">0%</strong></div></div><footer class="page-footer"><p>Study 33</p><p>공부 시간: 평일 22시 이후 / 주말 09:00–23:30. 충분한 수면과 휴식을 확보하면서 단원 완료를 우선하세요.</p></footer></main><script src="./app.js" defer></script></body></html>
