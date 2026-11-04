@@ -10,12 +10,12 @@ const baseTasks=['오늘 끝낼 범위의 핵심 개념 정리','교과서 예�
 const extraTasks=['응용·심화 문제까지 해결하기','다른 과목 누적 오답 1시간 복습하기'];
 const tasksFor=d=>d.weekend?[baseTasks[0],baseTasks[1],extraTasks[0],baseTasks[2],extraTasks[1],baseTasks[3]]:baseTasks;
 const weekendPractice = [
-  ["풀이에 쓸 정의와 조건 적기","그래프에 풀이 단서 표시하기","유사 문제 한 개를 해설 없이 풀기","틀린 문제의 첫 풀이 단계 설명하기"],
-  ["지문에서 핵심 발화나 문장 표시하기","정답의 근거가 되는 표현 찾기","헷갈린 선지 두 개의 차이 설명하기","유사 문항 한 개를 시간 재고 풀기"],
-  ["반응 전후 입자 변화를 그림으로 표현하기","실험 조건과 관찰 결과를 표로 정리하기","조건 하나를 바꿔 결과 예측하기","틀린 선지가 성립하지 않는 이유 설명하기"],
-  ["상황을 그림으로 옮겨 물리량 표시하기","쓸 법칙과 적용 조건 적기","값을 대입하기 전에 관계식 세우기","답의 단위와 방향 점검하기"],
-  ["유전 조건을 기호로 정리하기","가능한 유전자형을 표로 나타내기","자료에서 후보를 제외하는 근거 표시하기","유사 문제에서 판단 순서 다시 써보기"],
-  ["관측 자료의 축과 단위 확인하기","자료에서 읽은 경향 한 문장으로 쓰기","경향을 설명하는 원리 연결하기","새 자료에 같은 원리를 적용해 보기"]
+  "오늘 범위 교과서 1회독",
+  "교과서 문제 3개 풀기",
+  "문제집 기본 문제 5개 풀기",
+  "응용 문제 3개 풀기",
+  "고난도 문제 2개 풀기",
+  "지난 오답 2개 다시 풀기"
 ];
 
 // Split the six subjects across Saturday and Sunday, retaining both original assignments.
@@ -30,7 +30,7 @@ for (const saturday of days.filter(day => day.dow === 6)) {
       day.sessions.push({
         subject, key: day.i + ':' + subject,
         goal: short[subject] + ' ' + phases[day.phase] + ' 복습',
-        tasks: ['핵심 개념과 취약한 부분 정리', '대표 문제를 풀고 오답 확인', ...weekendPractice[subject]]
+        tasks: weekendPractice
       });
     }
   }
