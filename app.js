@@ -22,3 +22,13 @@ function renderGoals(){const container=$('ranges');container.replaceChildren();s
 function showTab(tab){document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));['daily','weekly','goals'].forEach(id=>$(id).classList.toggle('hidden',id!==tab));if(tab==='daily')renderDaily();if(tab==='weekly')renderWeekly();if(tab==='goals')renderGoals()}
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));$('customGoal').oninput=e=>{state.custom[state.selected]=e.target.value;save();$('goalTitle').textContent=e.target.value||defaults[state.selected]};$('notes').oninput=e=>{state.notes[state.selected]=e.target.value;save()};$('prev').onclick=()=>{state.selected=Math.max(0,state.selected-1);save();renderDaily()};$('next').onclick=()=>{state.selected=Math.min(32,state.selected+1);save();renderDaily()};$('resetDay').onclick=()=>{if(!confirm('이 날짜의 체크만 초기화하시겠습니까?'))return;tasksFor(days[state.selected]).forEach((_,i)=>delete state.checks[`${state.selected}-${i}`]);save();renderDaily()};$('export').onclick=()=>{const blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),state},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='study33-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.version!==1||!data.state||typeof data.state!=='object'||!data.state.checks)throw Error('잘못된 백업 파일');if(!confirm('현재 데이터를 백업 내용으로 교체하시겠습니까?'))return;state={checks:{},custom:{},notes:{},ranges:{},master:{},selected:0,...data.state};save();showTab('daily')}catch(err){alert('복원 실패: '+err.message)}e.target.value=''};
 if(!Number.isInteger(state.selected)||state.selected<0||state.selected>=33)state.selected=0;renderDaily();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn));
+
+// Refresh an already controlled page once a new offline app shell is active.
+if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    location.reload();
+  });
+}
