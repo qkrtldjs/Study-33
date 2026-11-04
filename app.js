@@ -46,6 +46,7 @@ const make=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.classNa
 const isComplete = day => { const {total, checked} = dailyProgress(day); return total === checked; };
 function updateStats(){const done=days.filter(isComplete).length;const all=days.reduce((n,d)=>n+dailyProgress(d).total,0);const checked=days.reduce((n,d)=>n+dailyProgress(d).checked,0);$('doneDays').textContent=`${done} / 33`;$('doneTasks').textContent=checked;$('percent').textContent=`${Math.round(checked/all*100)}%`;const today=new Date();today.setHours(0,0,0,0);const exam=new Date(2026,11,7);const remaining=Math.ceil((exam-today)/86400000);$('countdown').textContent=remaining>=0?`시험 D-${remaining}`:'시험일 경과';}
 function calendar(){const c=$('calendar');c.replaceChildren();['일','월','화','수','목','금','토'].forEach(x=>c.append(make('div','weekday',x)));for(let i=0;i<3;i++)c.append(make('div'));days.forEach(d=>{const b=make('button',`date ${state.selected===d.i?'active':''} ${isComplete(d)?'complete':''}`,String(d.day));b.title=`${d.month}월 ${d.day}일 · ${d.sessions.map(s=>subjects[s.subject]).join(" · ")}`;b.onclick=()=>{state.selected=d.i;save();renderDaily()};c.append(b)});}
+let editingSession = null;
 function renderDaily(){const d=days[state.selected]||days[0];
   const session = sessionFor(d);
   const picker = $('subjectPicker');
@@ -63,7 +64,52 @@ $('dayLabel').textContent=`${d.month}월 ${d.day}일 · ${['일','월','화','�
   const {checked,total}=dailyProgress(d);
   $('dailyCount').textContent=checked+'/'+total+' 완료';
   $('dailyProgress').style.width=(100*checked/total)+'%';
-  const list=$('tasks');list.replaceChildren();ts.forEach((t,i)=>{const label=make('label','checkrow');const box=make('input');box.type='checkbox';box.checked=!!state.checks[`${session.key}-${i}`];box.onchange=()=>{state.checks[`${session.key}-${i}`]=box.checked;save();renderDaily();updateStats()};label.append(box,make('span','',t));list.append(label)});$('prev').disabled=d.i===0;$('next').disabled=d.i===32;calendar();updateStats();}
+  if (editingSession !== session.key) editingSession = null;
+  const editing = editingSession === session.key;
+  const toggle = $('editTasks');
+  toggle.textContent = editing ? '편집 완료' : '항목 편집';
+  toggle.setAttribute('aria-pressed', String(editing));
+  toggle.onclick = () => {
+    editingSession = editing ? null : session.key;
+    renderDaily();
+    if (!editing) $('tasks').querySelector('input')?.focus();
+    else toggle.focus();
+  };
+  const list = $('tasks');
+  list.replaceChildren();
+  ts.forEach((defaultText, index) => {
+    const key = session.key + '-' + index;
+    const text = state.taskText?.[key] || defaultText;
+    if (editing) {
+      const input = make('input', 'task-text');
+      input.type = 'text';
+      input.value = text;
+      input.placeholder = defaultText;
+      input.setAttribute('aria-label', (index + 1) + '번째 체크리스트 항목');
+      input.oninput = () => {
+        state.taskText ||= {};
+        const value = input.value.trim();
+        if (value && value !== defaultText) state.taskText[key] = value;
+        else delete state.taskText[key];
+        save();
+      };
+      input.onblur = () => { input.value = state.taskText?.[key] || defaultText; };
+      list.append(input);
+      return;
+    }
+    const label = make('label', 'checkrow');
+    const box = make('input');
+    box.type = 'checkbox';
+    box.checked = !!state.checks[key];
+    box.onchange = () => {
+      state.checks[key] = box.checked;
+      save();
+      renderDaily();
+    };
+    label.append(box, make('span', '', text));
+    list.append(label);
+  });
+  $('prev').disabled=d.i===0;$('next').disabled=d.i===32;calendar();updateStats();}
 function renderWeekly(){const container=$('weekcards');container.replaceChildren();weekInfo.forEach(([title,goal,a,b])=>{const card=make('div','weekcard');card.append(make('h3','',title),make('p','muted',goal));const row=make('div','weekdays');days.slice(a,b+1).forEach(d=>{const button=make('button',`chip ${isComplete(d)?'done':''}`,`${d.month}/${d.day} ${d.sessions.map(s=>short[s.subject]).join(" · ")} ${isComplete(d)?'✓':''}`);button.onclick=()=>{state.selected=d.i;save();showTab('daily')};row.append(button)});card.append(row);container.append(card)})}
 function renderGoals(){const container=$('ranges');container.replaceChildren();subjects.forEach((name,i)=>{const wrap=make('div','field');const label=make('label','',name);const input=make('textarea');input.placeholder='예: 교과서 45~90쪽 / 2단원 전체';input.value=state.ranges[i]||'';input.oninput=()=>{state.ranges[i]=input.value;save()};wrap.append(label,input);container.append(wrap)});const master=$('masterGoals');master.replaceChildren();['6과목 시험 범위 개념 1회독','각 과목의 응용 유형 끝내기','틀린 문제 해설 없이 다시 풀기','시험 3일 전 최종 암기 완료'].forEach((t,i)=>{const label=make('label','checkrow');const check=make('input');check.type='checkbox';check.checked=!!state.master[i];check.onchange=()=>{state.master[i]=check.checked;save()};label.append(check,make('span','',t));master.append(label)})}
 function showTab(tab){const titles={daily:'홈',weekly:'주간 계획',goals:'목표'};document.querySelector('.workspace-heading h1').textContent=titles[tab];document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));['daily','weekly','goals'].forEach(id=>$(id).classList.toggle('hidden',id!==tab));if(tab==='daily')renderDaily();if(tab==='weekly')renderWeekly();if(tab==='goals')renderGoals()}
