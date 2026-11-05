@@ -1,7 +1,9 @@
 (() => {
   const panel = document.querySelector('#school-hub');
   const form = panel.querySelector('form');
-  const {grade, room, date} = form.elements;
+  const grade = '2';
+  const room = '10';
+  const {date} = form.elements;
   const status = panel.querySelector('[role=status]');
   const list = panel.querySelector('ol');
   const today = new Intl.DateTimeFormat('sv-SE', {timeZone:'Asia/Seoul'}).format(new Date());
@@ -11,11 +13,6 @@
   }
   function save(key, value) {
     try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
-  }
-  const preference = read('study33-school-class');
-  if (preference) {
-    grade.value = preference.grade;
-    room.value = preference.room;
   }
   function display(rows) {
     list.replaceChildren(...rows.map(([period, subjects]) => {
@@ -33,12 +30,11 @@
     active = controller;
     display([]);
     if (!form.checkValidity()) {
-      status.textContent = '학년과 반, 조회할 날짜를 선택하세요.';
+      status.textContent = '조회할 날짜를 선택하세요.';
       return;
     }
-    const g = grade.value, c = String(Number(room.value)), day = date.value.replaceAll('-', '');
-    save('study33-school-class', {grade:g, room:c});
-    const key = ['study33-school',g,c,day].join(':');
+    const day = date.value.replaceAll('-', '');
+    const key = ['study33-school',grade,room,day].join(':');
     const cached = read(key);
     if (Array.isArray(cached)) display(cached);
     status.textContent = '시간표를 확인하고 있습니다…';
@@ -47,7 +43,7 @@
       const subjects = new Map();
       let received = 0;
       for (let page = 1; page <= 20; page++) {
-        const params = new URLSearchParams({Type:'json', ATPT_OFCDC_SC_CODE:'J10', SD_SCHUL_CODE:'7530122', GRADE:g, CLASS_NM:c, ALL_TI_YMD:day, pIndex:String(page), pSize:'100'});
+        const params = new URLSearchParams({Type:'json', ATPT_OFCDC_SC_CODE:'J10', SD_SCHUL_CODE:'7530122', GRADE:grade, CLASS_NM:room, ALL_TI_YMD:day, pIndex:String(page), pSize:'100'});
         const response = await fetch('https://open.neis.go.kr/hub/hisTimetable?' + params, {signal:controller.signal});
         if (!response.ok) throw Error();
         const data = await response.json();
@@ -56,7 +52,7 @@
         if (!rows?.length) throw Error();
         const before = [...subjects.values()].reduce((sum, s) => sum+s.size,0);
         for (const row of rows) {
-          if (row.SD_SCHUL_CODE !== '7530122' || row.ALL_TI_YMD !== day || String(row.GRADE) !== g || String(row.CLASS_NM) !== c) throw Error();
+          if (row.SD_SCHUL_CODE !== '7530122' || row.ALL_TI_YMD !== day || String(row.GRADE) !== grade || String(row.CLASS_NM) !== room) throw Error();
           const period = Number(row.PERIO);
           if (!(period > 0) || !row.ITRT_CNTNT) throw Error();
           if (!subjects.has(period)) subjects.set(period, new Set());
@@ -71,12 +67,12 @@
       const result = [...subjects].sort(([a],[b]) => a-b).map(([period,names]) => [period,[...names].join(' / ')]);
       display(result);
       save(key,result);
-      status.textContent = result.length ? g+'학년 '+c+'반 · '+date.value : '나이스에 이 날짜의 수업이 등록되어 있지 않습니다.';
+      status.textContent = result.length ? grade+'학년 '+room+'반 · '+date.value : '나이스에 이 날짜의 수업이 등록되어 있지 않습니다.';
     } catch {
       if (active === controller) status.textContent = Array.isArray(cached) ? '마지막 조회 결과입니다. 최신 시간표를 확인할 수 없습니다.' : '나이스에 연결하지 못했습니다. 아래 학급 시간표에서도 확인할 수 있습니다.';
     } finally { clearTimeout(timer); }
   }
   form.addEventListener('submit', event => {event.preventDefault(); lookup();});
   form.addEventListener('change', lookup);
-  if (preference) lookup();
+  lookup();
 })();
